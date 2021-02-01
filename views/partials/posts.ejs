@@ -1,0 +1,80 @@
+<% if (title === "Home") { %> 
+    <section id="posts">
+        <% if(posts) { %>
+            <% posts.forEach( post => { %>
+                <div class="container">
+                    <div class="user-post flex-col">
+                        <div class="auther-info">
+                            <img src="" alt="" class="auther-photo">
+                            <h3 class="auther-name">
+                                <%= post.autherName %>
+                            </h3>
+                            <p class="created-at"> creates at: <%= post.created %> </p>
+                        </div>
+                        <div class="post-body">
+                            <%= post.content %>
+                        </div>
+                        <div class="like-comments">
+                            <div class="likes">
+                                <% if( post.likes.includes( user.gmail)  ) { %>
+                                    <span> <%= post.likes.length %> </span>  <span class = "like"> Unlike </span> 
+                                <% } else { %>
+                                    <span> <%= post.likes.length %> </span>  <span class = "like"> Like </span> 
+                                <% } %>
+                            </div>
+                            <div class="comments">
+                                Comments
+                            </div>
+                            <div style="display:none;" class="post-id">
+                                <%= post._id %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } ) %>
+        <% } else { %>
+                <h1> No Posts Available </h1>
+        <% } %> 
+
+    </section>
+<% } else { %>
+
+    <section id="posts">
+        <% if(posts) { %>
+            <% posts.forEach( post => { %>
+                <% if (post.autherGmail === user.gmail)  { %>
+                    <div class="container">
+                        <div class="user-post flex-col">
+                            <div class="auther-info">
+                                <img src="" alt="" class="auther-photo">
+                                <h3 class="auther-name">
+                                    <%= post.autherName %>
+                                </h3>
+                                <p class="created-at"> creates at: <%= post.created %> </p>
+                            </div>
+                            <div class="post-body">
+                                <%= post.content %>
+                            </div>
+                            <div class="like-comments">
+                                <div class="likes">
+                                    <% if( post.likes.includes( user.gmail)  ) { %>
+                                        <span> <%= post.likes.length %> </span>  <span class = "like"> Unlike </span> 
+                                    <% } else { %>
+                                        <span> <%= post.likes.length %> </span>  <span class = "like"> Like </span> 
+                                    <% } %>
+                                </div>
+                                <div class="comments">
+                                    Comments
+                                </div>
+                                <div style="display:none;" class="post-id">
+                                    <%= post._id %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } ) %>
+        <% } %> 
+    </section>
+
+<% } %>

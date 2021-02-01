@@ -1,0 +1,159 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+
+    <!-- Nav-Bar -->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Uploads -->
+    <%- include('./partials/upload.ejs') %>
+
+
+    <!-- Posts -->
+    <%- include('./partials/posts.ejs') %>
+  
+    <script>
+        // Variables for handeling Post
+        const posting = document.querySelector('.post');
+        const modal = document.querySelector('.modal')
+        const modalPost = document.querySelector('.upload-submit')
+        const modalCancel = document.querySelector('.modal-cancel')
+        const id = "<%= user._id %>".trim()
+
+        // Variables for handeling Job Post
+        const backdrop = document.querySelector('.backdrop') 
+
+        const balance = document.querySelector('.balance')
+
+        balance.querySelector('#add').addEventListener('click', e => {
+            
+            balance.querySelector('.backdrop').style.display = "block"
+            balance.querySelector('.modal-add-money').style.display = "block"
+            balance.querySelector('#cancel').addEventListener('click', e => {
+                balance.querySelector('.backdrop').style.display = "none"
+                balance.querySelector('.modal-add-money').style.display = "none"
+            })
+            balance.querySelector('.modal-post').addEventListener('click', e => {
+
+                const update = parseInt(balance.querySelector('#add-input').value)
+
+                const data = {
+                    _id: id,
+                    update: update
+                }
+                const options = {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+                fetch('cashflow', options)
+
+                location.assign('/post');
+            })
+        })
+        balance.querySelector('#withdraw').addEventListener('click', e => {
+            balance.querySelector('.backdrop').style.display = "block"
+            balance.querySelector('.modal-withdraw-money').style.display = "block"
+            balance.querySelector('#w-cancel').addEventListener('click', e => {
+                balance.querySelector('.backdrop').style.display = "none"
+                balance.querySelector('.modal-withdraw-money').style.display = "none"
+            })
+            balance.querySelector('.ww').addEventListener('click', e => {
+                const currentBalance = parseFloat(balance.querySelector('.current-balance').textContent.trim())
+                const update = parseInt(balance.querySelector('#withdraw-input').value)
+                if(currentBalance < update){
+                    balance.querySelector('p').innerText = `Do Not Have Sufficient Balance, you can withdraw ${currentBalance} or less than that...`
+                    balance.querySelector('p').style.color = "red"
+
+                }else {
+                    const data = {
+                        _id: id,
+                        update: -update,
+                    }
+                    const options = {
+                        method: "PUT",
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    fetch('cashflow', options)
+                    location.assign('/post');
+                }
+            })
+        })
+
+        // Variables for handeling Like and Unlike
+        const likes = document.querySelectorAll('.like');
+        const post_id = document.querySelector('.post-id')
+        const gmail = '<%= user.gmail %>';
+
+        
+    
+        // Post 
+        modalsOpen = () => { 
+            backdrop.style.display = "block"
+            modal.style.display = "block"
+        }
+        modalsClose = () => { 
+            backdrop.style.display = "none"
+            modal.style.display = "none"
+        }
+        posting.addEventListener("click", modalsOpen)
+        modalCancel.addEventListener("click", modalsClose)
+        modalPost.addEventListener("click", async (e) => {
+            const content = document.querySelector('textarea').value
+            if (content){
+                try {
+                const res = await fetch('/post', { 
+                method: 'POST', 
+                body: JSON.stringify({ content }),
+                headers: {'Content-Type': 'application/json'}
+                });
+                location.assign('/post');
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            }
+            document.querySelector('textarea').value = ""
+            modalsClose()
+        })
+
+        // Like and Unlike
+        if(likes){
+            likes.forEach(like => {
+                like.addEventListener('click', (e) => {
+
+                    const _id = like.parentElement.parentElement.parentElement.querySelector('.post-id').textContent.trim()
+                    const data = {
+                            _id : _id,
+                            gmail: gmail,
+                        }
+                    if(like.innerText === 'Like'){
+                        like.parentElement.firstChild.nextSibling.innerText =  parseInt(like.parentElement.firstChild.nextSibling.innerText) + 1
+                        like.innerText = "Unlike"
+                        data.like = true
+                    } else if (like.innerText === "Unlike") {
+                        like.parentElement.firstChild.nextSibling.innerText =  parseInt(like.parentElement.firstChild.nextSibling.innerText) - 1
+                        like.innerText = "Like"
+                        data.like = false
+                    }
+                    const options = {
+                            method: "PUT",
+                            headers: {
+                                'Content-Type' : 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }
+                    fetch('post/likes', options)
+                })
+            })  
+        }
+    </script>
+
+</body>
+</html>

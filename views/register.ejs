@@ -1,0 +1,73 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+
+    <!-- Navbar -->
+    <%- include('./partials/nav.ejs') %>
+
+    <main class="registration-main">
+        <h1> <%= title %> Form </h1>
+        <form class="registration-form">
+            <div class="first-name flex-space-between">
+                <!-- First Name -->
+                <label for="first-name"> First Name </label>
+                <input type="text" name="firstName" id="first-name">
+            </div>
+
+            <div class="last-name flex-space-between">
+                <!-- Last Name -->
+                <label for="last-name"> Last Name </label>
+                <input type="text" name="lastName" id="last-name">
+            </div>
+
+            <div class="gmail flex-space-between">
+                <!-- Gmail -->
+                <label for="gmail"> Gmail </label>
+                <input type="email" name="gmail" id="gmail">
+            </div>
+    
+            <div class="password flex-space-between">
+                <!-- Password -->
+                <label for="pass"> Password </label>
+                <input type="password" name="password" id="pass">
+            </div>
+
+            <div class="submit-btn">
+                <!-- Submit Button -->
+                <input type="submit" class="modal-button" value="Registration">
+            </div>
+        </form>
+        <a class="login" href="/login"> Already Have an Accout? Click here to login. </a>
+
+    </main>
+    <script>
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+
+          const firstName = form.firstName.value;
+          const lastName = form.lastName.value;
+          const gmail = form.gmail.value;
+          const password = form.password.value;
+          try {
+            const res = await fetch('/register', { 
+              method: 'POST', 
+              body: JSON.stringify({ firstName, lastName, gmail, password }),
+              headers: {'Content-Type': 'application/json'}
+            });
+            const data = await res.json();
+            console.log(data)
+            if (data.user) {
+              location.assign('/profile');
+            }
+          }
+          catch (err) {
+            console.log(err);
+          }
+        });
+      </script>
+</body>
+</html>

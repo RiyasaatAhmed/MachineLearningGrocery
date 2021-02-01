@@ -1,0 +1,73 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+    <!-- Navbars -->
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="modal-button" id="report"> Report </div>
+
+    <div class="backdrop"></div>
+    <div class="modal">
+        <h1>File a Report against a User</h1>
+        <div class="modal-input">
+            <input name="name" type="text" placeholder="User Name" class="report-input mb-1" > </input>
+            <textarea name="content" rows="5" placeholder="Report reason..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <div class="modal-button modal-cancel" id="cancel">Cancel</div>
+            <div class="modal-button modal-post" >Post</div>
+        </div>
+    </div>
+
+    <script>
+        const report = document.querySelector('#report')
+        const backdrop = document.querySelector('.backdrop')
+        const modal = document.querySelector('.modal')
+        const userGmail = "<%= user.gmail %>"
+        const userName = "<%= user.firstName %> <%= user.lastName %>"
+
+        report.addEventListener('click', e => {
+            e.preventDefault()
+            backdrop.style.display = 'block'
+            modal.style.display = 'block'
+
+            // cancel
+            modal.querySelector('#cancel').addEventListener('click', e => {
+                e.preventDefault();
+                backdrop.style.display = 'none'
+                modal.style.display = 'none'
+            })
+
+            // post
+            modal.querySelector('.modal-post').addEventListener('click',async e => {
+                e.preventDefault()
+                const name = modal.querySelector('input').value
+                console.log(name)
+                const reason = modal.querySelector('textarea').value
+                const data = {
+                    reportedByGmail: userGmail,
+                    reportedByName: userName,
+                    reportedAgainstName: name,
+                    reason: reason
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+                fetch('/report', options)
+                backdrop.style.display = 'none'
+                modal.style.display = 'none'
+
+                modal.querySelector('input').value = ""
+                modal.querySelector('textarea').value = ""
+            })
+
+        })
+    </script>
+
+</body>
+</html>

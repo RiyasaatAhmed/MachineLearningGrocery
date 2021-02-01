@@ -1,0 +1,159 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+
+<body>
+    
+    <!-- Navbar -->
+    <%- include('./partials/nav.ejs') %>
+
+    <!-- Upload -->
+    <%- include('./partials/upload.ejs') %>
+
+    <!-- Jobs -->
+    <%- include('./partials/job.ejs') %>
+
+    <script>
+
+        const modalJobPost = document.querySelector('.modal-job-post')
+        const modalJobCancel = document.querySelector('.modal-job-cancel')
+        const backdrop = document.querySelector('.backdrop') 
+        const modalJob = document.querySelector('.modal-jobposting')
+        const jobPosting = document.querySelector('.job');
+        const form = document.querySelector('.modal-jobposting form')
+        const gmail = '<%= user.gmail %>';
+        const id = '<%= user._id %>';
+        const jobs = document.querySelectorAll('.user-job');
+        const addSampleData = document.querySelectorAll('.data-input button')
+        const viewDataSet = document.querySelectorAll('.view-dataset')
+        const viewContribution = document.querySelectorAll('.view-contribution')
+
+        const updateWidth = (job, value=0) => {
+            const totalSamples = parseInt(job.querySelector('.job-sample span').textContent)
+            const workSamplesLength = parseInt(job.querySelector('.workSamples-length').textContent) + value
+            job.querySelector('.workSamples-length').textContent = parseInt(job.querySelector('.workSamples-length').textContent) + value
+            const width = ((100 * workSamplesLength)/totalSamples).toFixed(2)
+            const strWidth = width.toString() + "%";
+            if (width > 8) {
+                job.querySelector('.inner-width').textContent = strWidth;
+            }
+            const currentlyWorking = job.querySelector('.currently-working span').textContent
+            job.querySelector('.completed').textContent = `Completed: + ${strWidth}, Contributed By: ${currentlyWorking} People`;
+            job.querySelector('.inner-width').style.width = strWidth;
+            job.querySelector('.remaining-samplpes span').textContent = parseInt(job.querySelector('.remaining-samplpes span').textContent) - value
+            if(width >= 100){
+                job.querySelector('.data-input').style.display = "none";
+                return;
+            }
+        }
+        
+        if(jobs){
+
+            jobs.forEach(job => {
+                updateWidth(job)
+            })
+            addSampleData.forEach((addSample, index) => {
+    
+                addSample.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    let isCompleted = false;
+                    if(parseInt(addSample.parentElement.parentElement.querySelector('.remaining-samplpes span').textContent)-1 === 0)
+                    {
+                        isCompleted = true
+                    }
+                    if(addSample.previousElementSibling.value){
+                        const value = addSample.previousElementSibling.value
+                        updateWidth(addSample.parentElement.parentElement, 1)
+                        const job_id = addSample.parentElement.parentElement.querySelector('.job-id span').textContent.trim()
+                        const data = {
+                            gmail : gmail,
+                            sample : `${gmail} : ${value}`,
+                            _id : job_id,
+                            isCompleted: isCompleted
+                        }
+                        console.log(isCompleted)
+                        const options = {
+                            method: "PUT",
+                            headers: {
+                                'Content-Type' : 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }
+                        fetch('job', options)
+                        addSample.previousElementSibling.value = ""
+                    }
+                })
+
+            })
+
+            viewDataSet.forEach(view => {
+                view.addEventListener('click', (e) => {
+                    
+                    view.parentElement.querySelector('.backdrop').style.display = "block";
+                    view.parentElement.querySelector('.modal-view-dataset').style.display = "block";
+                    view.parentElement.querySelector('#cancel').addEventListener('click', (e) => {
+                        view.parentElement.querySelector('.backdrop').style.display = "none";
+                        view.parentElement.querySelector('.modal-view-dataset').style.display = "none";
+                    }) 
+    
+                })
+            })
+        }
+
+        modalsJobOpen = () => { 
+            backdrop.style.display = "block"
+            modalJob.style.display = "block"
+        }
+        modalsJobClose = () => { 
+            backdrop.style.display = "none"
+            modalJob.style.display = "none"
+        }
+             
+        jobPosting.addEventListener("click", modalsJobOpen)
+        modalJobCancel.addEventListener("click", modalsJobClose)
+
+        modalJobPost.addEventListener("click", (e) => {
+            e.preventDefault()
+            const currentBalance = parseFloat(document.querySelector('.current-balance').textContent.trim())
+            const budget = form.budget.value
+            if (currentBalance >= parseInt(budget)){
+
+                const title = form.title.value
+                const description = form.description.value
+                const sampleNumber = form.sampleNumber.value
+                const type = form.type.value
+                const experience = form.experience.value
+                const data = {title, description, budget, sampleNumber, type, experience, gmail}
+                const options = {
+                                method: "Post",
+                                headers: {
+                                    'Content-Type' : 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            }
+                fetch('job', options)
+                const data2 = {
+                    _id: id,
+                    update: -budget,
+                }
+                const options2 = {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify(data2)
+                }
+                fetch('cashflow', options2)
+                location.assign('/job');
+
+            }else {
+
+                modalJob.querySelector('p').innerText = `Do Not Have Sufficient Balance, you can make the budget of this job atmost $${currentBalance} or less than that...`
+                modalJob.querySelector('p').style.color = "red"
+            }  
+        })
+    
+    </script>
+
+</body>
+</html>

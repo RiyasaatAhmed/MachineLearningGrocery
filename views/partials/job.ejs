@@ -1,0 +1,182 @@
+<% if (title === "Jobs") { %>
+    <section id="jobs">
+        <div class="container">
+            <% if (jobs) { %> 
+                <% jobs.forEach(job => { %>
+                    <div class="user-job">
+                        <div class="researcher-info">
+                            <img src="" alt="" class="researcher-photo">
+                            <h3 class="researcher-name">
+                                <%= job.name %>
+                            </h3>
+                            <p class="created-at"> <%= job.created %> </p>
+                        </div>
+                        <h1 class="job-title">
+                            <%= job.title %>
+                        </h1>
+                        <div class="mb-1 job-description">
+                            <h3> Description </h3>
+                            <span> <%= job.description %> </span>
+                        </div>
+                        <div class="mb-1 job-row">
+                            <div class="job-budget">
+                                <strong> Budget: </strong>  <%= job.budget %>
+                            </div>
+                            <div class="job-sample">
+                                <strong> Sample Needed: </strong> <span> <%= job.sampleNumber %> </span> 
+                            </div>
+                        </div>
+                        <div class="mb-1 job-row">
+                            <div class="job-type">
+                                <strong>Type:</strong>  <%= job.type %>
+                            </div>                   
+                            <div class="job-experience">
+                                <strong> Experience:  </strong><%= job.experience %>
+                            </div>
+                        </div>
+                        <div class="job-id" style="display: none;"> <span>  <%= job._id %> </span></div>
+                        <div class="currently-working" style="display: none;"> <span>  <%= job.currentlyWorking.length %> </span></div>
+                        <div class="mb-1 remaining-samplpes">
+                            <h3 class=""> Remaining Samples: <span> <%= job.sampleNumber - job.workSamples.length %> </span>  </h3>
+                            <h6 class="mb-1 completed"></h6>
+                            <div class = "workSamples-length" style = "display: none;"> <%= job.workSamples.length %> </div>
+                            <div class="full-width"> <div class="flex-center inner-width">  </div></div>
+                        </div> 
+                        <div class="mb-1 data-input">
+                            <input type="text"> 
+                            <button> Add Sample </button>
+                        </div>
+                        <% if (user.gmail === job.gmail) { %>
+                            <% if(job.isCompleted) { %> 
+                                <div style="margin-bottom: 1rem;"> 
+                                    <a class="view-dataset" href="../../datasets/<%= job._id %>.json" download id="download" > Download </a>
+                                </div>
+                            <% } else { %>  
+                                <button class="mb-1 view-dataset">  View Dataset  </button>
+                                <div class="backdrop"></div>
+                                <div class="modal-view-dataset">
+                                    <h1>The Dataset</h1>
+                                    <div class="modal-input">
+                                        <% job.workSamples.forEach(sample => { %>
+                                            <h3 class="display-dataset"> <%= sample %> </h3>
+                                        <% }) %> 
+                                    </div>
+                                    <div class="modal-actions">
+                                        <div class="modal-button modal-cancel" id="cancel">Close</div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <button class="mb-1 view-dataset">  View Your Contribution  </button>
+                            <div class="backdrop"></div>
+                            <div class="modal-view-dataset">
+                                <h1>Your Contribution</h1>
+                                <div class="modal-input">
+                                    <% job.workSamples.forEach(sample => { %>
+                                        <% if (sample.includes(user.gmail)) { %> 
+                                            <h3 class="display-dataset"> <%= sample %> </h3>  
+                                        <%} %>
+                                    <% }) %> 
+                                </div>
+                                <div class="modal-actions">
+                                    <div class="modal-button modal-cancel" id="cancel">Close</div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <h1> No Jobs Available </h1>
+            <% } %>
+        </div>
+    </section>
+<% } else { %>
+    <section id="jobs">
+        <div class="container">
+            <% if (jobs) { %> 
+                <% jobs.forEach(job => { %>
+                    <% if (job.gmail === user.gmail) { %>
+                        <div class="user-job">
+                            <div class="researcher-info">
+                                <img src="" alt="" class="researcher-photo">
+                                <h3 class="researcher-name">
+                                    <%= job.name %>
+                                </h3>
+                                <p class="created-at"> <%= job.created %> </p>
+                            </div>
+                            <h1 class="job-title">
+                                <%= job.title %>
+                            </h1>
+                            <div class="mb-1 job-description">
+                                <h3> Description </h3>
+                                <span> <%= job.description %> </span>
+                            </div>
+                            <div class="mb-1 job-row">
+                                <div class="job-budget">
+                                    <strong> Budget: </strong>  <%= job.budget %>
+                                </div>
+                                <div class="job-sample">
+                                    <strong> Sample Needed: </strong> <span> <%= job.sampleNumber %> </span> 
+                                </div>
+                            </div>
+                            <div class="mb-1 job-row">
+                                <div class="job-type">
+                                    <strong>Type:</strong>  <%= job.type %>
+                                </div>                   
+                                <div class="job-experience">
+                                    <strong> Experience:  </strong><%= job.experience %>
+                                </div>
+                            </div>
+                            <div class="job-id" style="display: none;"> <span>  <%= job._id %> </span></div>
+                            <div class="currently-working" style="display: none;"> <span>  <%= job.currentlyWorking.length %> </span></div>
+                            
+                            <div class="mb-1 remaining-samplpes">
+                                <h3 class=""> Remaining Samples: <span> <%= job.sampleNumber - job.workSamples.length %> </span>  </h3>
+                                <h6 class="mb-1 completed"></h6>
+                                <div class = "workSamples-length" style = "display: none;"> <%= job.workSamples.length %> </div>
+                                <div class="full-width"> <div class="flex-center inner-width">  </div></div>
+                            </div> 
+                            <div class="mb-1 data-input">
+                                <input type="text"> 
+                                <button> Add Sample </button>
+                            </div>
+                            <% if (user.gmail === job.gmail) { %>
+                                <button class="mb-1 view-dataset">  View Dataset  </button>
+                                <div class="backdrop"></div>
+                                <div class="modal-view-dataset">
+                                    <h1>The Dataset</h1>
+                                    <div class="modal-input">
+                                        <% job.workSamples.forEach(sample => { %>
+                                            <h3 class="display-dataset"> <%= sample %> </h3>
+                                        <% }) %> 
+                                    </div>
+                                    <div class="modal-actions">
+                                        <div class="btn modal-cancel" id="cancel">Close</div>
+                                    </div>
+                                </div>
+                            <% } else { %>
+                                <button class="mb-1 view-dataset">  View Your Contribution  </button>
+                                <div class="backdrop"></div>
+                                <div class="modal-view-dataset">
+                                    <h1>Your Contribution</h1>
+                                    <div class="modal-input">
+                                        <% job.workSamples.forEach(sample => { %>
+                                            <% if (sample.includes(user.gmail)) { %> 
+                                                <h3 class="display-dataset"> <%= sample %> </h3>  
+                                            <%} %>
+                                        <% }) %> 
+                                    </div>
+                                    <div class="modal-actions">
+                                        <div class="modal-button modal-cancel" id="cancel">Close</div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } %>
+                <% }) %>
+            <% }  else { %>
+                <h1> No Jobs Available </h1>
+            <% } %> 
+        </div>
+    </section>
+<% } %>

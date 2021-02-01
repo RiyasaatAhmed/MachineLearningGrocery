@@ -1,0 +1,72 @@
+    <!-- Uploading -->
+    <section id="upload">
+        <div class="container">
+            <div class="upload-btns flex-space-around">
+                <% if (title === 'Home') { %>
+                <div class="post">
+                    Normal Posting
+                </div>
+                <% } else { %>
+                <div class="job">
+                    Job Posting
+                </div>
+                <% } %>
+            </div>
+        </div>
+    
+        <div class="backdrop"></div>
+        <div class="modal">
+            <h1>Create a new Post</h1>
+            <div class="modal-input">
+                <textarea name="content" rows="5"></textarea>
+            </div>
+            <div class="modal-actions">
+                <div class="modal-button modal-cancel" id="cancel">Cancel</div>
+                <div class="modal-button modal-post upload-submit" >Post</div>
+            </div>
+        </div>
+
+
+        <div class="modal-jobposting">
+            <h1>Create a new Job Post</h1>
+            <p class="mb-1">  </p>
+            <form>
+                <div class="modal-job-input">
+                    <div class="title">
+                        <h4>Job Title</h4>
+                        <input type="text" name="title">
+                    </div>
+                    <div class="description">
+                        <h4>Job Description</h4>
+                        <textarea name="description" rows="5"></textarea>
+                    </div>
+                    <div class="flex-space-around">
+                        <div class="budget">
+                            <h4>Budget</h4>
+                            <input type="number" name="budget">
+                        </div>
+                        <div class="sample-number">
+                            <h4>Samples Needed</h4>
+                            <input type="number" name="sampleNumber">
+                        </div>
+                    </div>
+                    <div class="flex-space-around">
+                        <div class="dataset-type">
+                            <h4>Type</h4>
+                            <input type="text" name="type">
+                        </div>
+                        <div class="Experience">
+                            <h4>Experience</h4>
+                            <input type="text" name="experience">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <div class="modal-button modal-job-cancel" id="cancel">Cancel</div>
+                    <div class="modal-button modal-job-post">Post</div>
+
+                </div>
+            </form>
+        </div>
+
+    </section>

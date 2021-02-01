@@ -1,0 +1,421 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+    
+    <!-- Navbars -->
+    <%- include('./partials/nav.ejs') %>
+
+    <div id="user-image">
+        <div class="container">
+            <div class="cover-image">
+                <% if(user.coverPicture) { %>
+                    <img src= "<%= user.coverPicture %>" alt=""> 
+                <% } else { %>
+                    <img src= "cover.png" alt="">
+                <% } %>
+                <i class="fas fa-2x fa-camera-retro"></i>
+            </div>
+            <div class="profile-image">
+                <% if(user.profilePicture) { %>
+                    <img src= "<%= user.profilePicture %>" alt=""> 
+                <% } else { %>
+                    <img src= "profile.jpg" alt="">
+                <% } %>
+                <i class="fas fa-2x fa-camera-retro"></i>
+            </div>
+        </div>
+        <div class="backdrop"></div>
+        <div class="modal">
+            <h1> </h1>
+            <div class="modal-input">
+                <input type="file" name="Upload" id="">
+            </div>
+            <div class="modal-actions">
+                <div class="modal-button modal-cancel" id="cancel">Cancel</div>
+                <button id="upload" class="modal-button modal-post" value="Upload"> Upload </button>
+            </div>
+        </div>
+    </div>
+    <section id="user-info">
+        <div class="container">
+            <div class="user-name">
+                <h1> <%= user.firstName %> <%= user.lastName %>  </h1>
+            </div>
+            <div class="user-bio">
+               <% if (user.bio) { %>
+                    <h3> <%= user.bio %> </h3>
+                    <a class="add-bio"> Update </a>
+                <% } else { %>
+                    <h3>  </h3>
+                    <a class="add-bio">Add Bio</a> 
+                <% } %>
+                <div class="update">
+                    <textarea name="" class="bio-update" cols="30" rows="5">  <%= user.bio %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-bio"> Update </button>
+                    </div>
+                </div>
+            </div>
+            <nav id= "user-nav">
+                <ul>
+                    <li> <a id="about" href="">About </a>  </li>
+                    <li> <a id="post" href="">Posts </a>  </li>
+                    <li> <a id="job-posts" href="">Job Posts </a> </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Post -->
+    <div class="profile-post">
+        <%- include('./partials/posts.ejs')  %>
+    </div>
+    <!-- Job Post -->
+    <div class="profile-job">
+        <%- include('./partials/job.ejs') %>
+    </div>
+    <!-- About -->
+    <div class="profile-about">
+        <div class="container">
+
+            <!-- organization -->
+            <div class="element organization">
+                <h2 class="title"> Organization </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.organization) { %>
+                        <h3> <i class="fas fa-graduation-cap"></i>  <span> <%= user.organization %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3> <i class="fas fa-graduation-cap"></i> <span> Organization : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="organization-update" cols="30" rows="5">  <%= user.organization %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-organization"> Update </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Designation -->
+            <div class="element designation">
+                <h2 class="title"> Designation </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.designation) { %>
+                        <h3> <i class="fas fa-cocktail"></i> <span> <%= user.designation %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3><i class="fas fa-cocktail"></i> <span>  Designation : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="designation-update" cols="30" rows="5">  <%= user.designation %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-designation"> Update </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- University -->
+            <div class="element university">
+                <h2 class="title"> University </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.university) { %>
+                        <h3> <i class="fas fa-graduation-cap"></i>  <span> <%= user.university %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3> <i class="fas fa-graduation-cap"></i> <span> University : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="university-update" cols="30" rows="5">  <%= user.university %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-university"> Update </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- College -->
+            <div class="element college">
+                <h2 class="title"> College </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.college) { %>
+                        <h3> <i class="fas fa-graduation-cap"></i>  <span> <%= user.college %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3> <i class="fas fa-graduation-cap"></i> <span> College : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="college-update" cols="30" rows="5">  <%= user.college %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-college"> Update </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- school -->
+            <div class="element school">
+                <h2 class="title"> School </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.school) { %>
+                        <h3> <i class="fas fa-graduation-cap"></i>  <span> <%= user.school %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3> <i class="fas fa-graduation-cap"></i> <span> School : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="school-update" cols="30" rows="5">  <%= user.school %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-school"> Update </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- gmail -->
+            <div class="element gmail">
+                <h2 class="title"> Gmail </h2>
+                <div class="title-info flex-space-between">
+                    <% if (user.gmail) { %>
+                        <h3> <i class="fas fa-at"></i>  <span> <%= user.gmail %> </span>  </h3>
+                        <i class="fas fa-pen"> </i>
+
+                    <% } else { %>
+                        <h3> <i class="fas fa-at"></i> <span> Gmail : </span> </h3>
+                        <i class="fas fa-pen"> </i>
+                    <% } %>
+                </div>
+                <div style="display: none;"class="update">
+                    <textarea name="" class="gmail-update" cols="30" rows="5">  <%= user.gmail %>  </textarea>
+                    <div class="btn">
+                        <button id="cancel-update"> Cancel </button>
+                        <button id="update-gmail"> Update </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // const bio = document.querySelector(".bio a");
+        const school = document.querySelector(".school a");
+        const college = document.querySelector(".college a");
+        const university = document.querySelector(".university a");
+        const designation = document.querySelector(".designation a");
+        const icon = document.querySelectorAll(".fas")
+
+        const userBio = document.querySelector('.user-bio h3')
+        const addBio = document.querySelector('.add-bio')
+        const updateBio = document.querySelector('.update')
+        const id = "<%= user._id %>"
+
+        const addOrganization = document.querySelector('.organization')
+        const addDesignation = document.querySelector('.designation')
+        const addUniversity = document.querySelector('.university')
+        const addCollege = document.querySelector('.college')
+        const addSchool = document.querySelector('.school')
+        const addGmail = document.querySelector('.gmail')
+
+
+        const profilePictureUploadBtn = document.querySelector('.profile-image i')
+        const coverPictureUploadBtn = document.querySelector('.cover-image i')
+        const backdrop = document.querySelector('.backdrop')
+        const modal = document.querySelector('.modal')
+        const cancel = document.querySelector('#cancel')
+        const upload = document.querySelector('#upload')
+
+
+        const about = document.querySelector('#about')
+        const post = document.querySelector('#post')
+        const jobPost = document.querySelector('#job-posts')
+        
+        const currentClassHandle = (About, Post, JobPost) => {
+
+            if(About){
+                about.parentElement.classList.add("current")
+                document.querySelector('.profile-about').style.display = "block"
+                
+            }else{
+                about.parentElement.classList.remove("current")
+                document.querySelector('.profile-about').style.display = "none"
+            }
+
+            if(Post){
+                post.parentElement.classList.add("current")
+                document.querySelector('.profile-post').style.display = "block"
+
+            }else{
+                post.parentElement.classList.remove("current")
+                document.querySelector('.profile-post').style.display = "none"
+
+            }
+
+            if(JobPost){
+                jobPost.parentElement.classList.add("current")
+                document.querySelector('.profile-job').style.display = "block"
+
+            }else{
+                jobPost.parentElement.classList.remove("current")
+                document.querySelector('.profile-job').style.display = "none"
+            }
+        }
+        post.addEventListener('click', (e) => {
+            e.preventDefault()
+            currentClassHandle(false, true, false)
+        })
+        jobPost.addEventListener('click', (e) => {
+            e.preventDefault()
+            currentClassHandle(false, false, true)
+        })
+        about.addEventListener('click', (e) => {
+            e.preventDefault()
+            currentClassHandle(true, false, false)
+        })
+
+
+
+        const showHideBio = (bio, first, second) => {
+            if(bio.previousElementSibling){
+                bio.previousElementSibling.style.display = first
+            }
+            bio.style.display = first
+            updateBio.style.display = second
+        }
+
+        addBio.addEventListener('click', (e) => {
+            e.preventDefault()
+            showHideBio(addBio, "none", "block")
+            updateBio.querySelector('#cancel-update').addEventListener('click', (e) => {
+                e.preventDefault()
+                showHideBio(addBio, "block", "none")
+            })
+            updateBio.querySelector('#update-bio').addEventListener('click', async(e) => {
+                e.preventDefault()
+                const updatedBio = updateBio.querySelector('textarea').value
+                showHideBio(addBio, "block", "none")
+                userBio.textContent = updatedBio
+                addBio.textContent = "Update"
+                await putRequest(updatedBio, "bio", "profile/update")
+            })  
+        })
+
+        // put request
+        const putRequest = async(update, type, url) => {
+            const data = {
+                    _id: id,
+                    update: update,
+                    type: type
+                }
+            const options = {
+                method: "PUT",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options)
+        }
+
+
+
+        // add Element
+        const updateElement = (element, type) => {
+            element.querySelector('.fa-pen').addEventListener('click', (e) => {
+            element.querySelector('.update').style.display = "block"
+            // Update
+            element.querySelector(`#update-${type}`).addEventListener('click', async(e) => {
+                e.preventDefault()
+                const updatedValue = element.querySelector('textarea').value;
+                element.querySelector('h3 span').textContent = updatedValue
+                element.querySelector('.update').style.display = "none"
+                await putRequest(updatedValue, type, "profile/update")
+
+            })
+            // Cancel
+            element.querySelector('#cancel-update').addEventListener('click', e => {
+                element.querySelector('.update').style.display = "none"
+            })
+
+            })
+        }
+
+        //Organization
+        updateElement(addOrganization, 'organization')
+        //Designation
+        updateElement(addDesignation, 'designation')
+        //University
+        updateElement(addUniversity, 'university')
+        //College
+        updateElement(addCollege, 'college')
+        //School
+        updateElement(addSchool, 'school')
+        //Gmail
+        updateElement(addSchool, 'gmail')
+
+
+        
+
+        const showModal = () => {
+            backdrop.style.display = 'block'
+            modal.style.display = 'block'
+        } 
+        const hideModal = () => {
+            backdrop.style.display = 'none'
+            modal.style.display = 'none'
+        } 
+
+
+
+        const imageUploadingHandle = (e, h1Title, element, phototype) => {
+            e.preventDefault();
+            showModal()
+            element.parentElement.parentElement.parentElement.querySelector('.modal h1').textContent = h1Title
+            element.parentElement.parentElement.parentElement.querySelector('#cancel').addEventListener('click', (e) => {
+                hideModal()
+            })
+            element.parentElement.parentElement.parentElement.querySelector('#upload').addEventListener('click', async(e) => {
+                const photo = modal.querySelector('input').files[0]
+                const data = new FormData();
+                data.append('photo', photo)
+                const options = {
+                    method: 'PUT',
+                    body: data
+                }
+                const url = `profile/${phototype}`
+                fetch(url, options)
+                setTimeout(() => {
+                    location.reload();
+                }, 100)
+            })
+
+        }
+        coverPictureUploadBtn.addEventListener('click', e =>{
+            imageUploadingHandle(e, 'Upload Cover Picture', coverPictureUploadBtn, 'cover-photo')
+        })
+        profilePictureUploadBtn.addEventListener('click', (e) => {
+            imageUploadingHandle(e, 'Upload Profile Picture', profilePictureUploadBtn, 'profile-photo')
+        })
+    
+    
+    </script>
+</body>
+</html>

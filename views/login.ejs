@@ -1,0 +1,59 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+
+    <!-- Navbar -->
+    <%- include('./partials/nav.ejs') %>
+
+    <main class='login-main'>
+        <h1> <%= title %> Form </h1>
+        <form class = "login-form">
+
+            <div class="gmail flex-space-between">
+                <!-- Gmail -->
+                <label for="gmail"> Gmail </label>
+                <input type="email" name="gmail" id="gmail">
+            </div>
+    
+            <div class="password flex-space-between">
+                <!-- Password -->
+                <label for="pass"> Password </label>
+                <input type="password" name="password" id="pass">
+            </div>
+
+            <div class="submit-btn">
+                <!-- Submit Button -->
+                <input class="modal-button" type="submit" value="Log In">
+            </div>
+        </form>
+        <a class="regis" href="/register"> Don't Have an Account? Click here to SignUp </a>
+    </main>
+    <script>
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const gmail = form.gmail.value;
+          const password = form.password.value;
+          try {
+            const res = await fetch('/login', { 
+              method: 'POST', 
+              body: JSON.stringify({ gmail, password }),
+              headers: {'Content-Type': 'application/json'}
+            });
+
+            const data = await res.json();
+            // console.log(data)
+            if (data.user) {
+              location.assign('/profile');
+            }
+          }
+          catch (err) {
+            console.log(err);
+          }
+        });
+      </script>
+</body>
+</html>

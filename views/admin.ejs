@@ -1,0 +1,161 @@
+<!-- Head -->
+<%- include('./partials/header.ejs') %>
+
+<body>
+    
+    <!-- Navbars -->
+    <%- include('./partials/nav.ejs') %>
+
+    <nav id= "admin-nav" >
+        <ul>
+            <li> <a id = "reports" href=""> Reports </a> </li>
+            <li> <a id = "completed-tasks" href=""> Completed Tasks </a> </li>
+            <li> <a id = "users" href=""> User List </a> </li>
+        </ul>
+    </nav>
+
+    <section id="user-list">
+        <div class="container"> 
+            <% users.forEach(user => { %>
+                <div class="user flex-space-between">
+                    <div class="flex"> 
+                        <% if(user.profilePicture) { %>
+                            <img src= "<%= user.profilePicture %>" alt=""> 
+                        <% } else { %>
+                            <img src= "profile.jpg" alt="">
+                        <% } %>
+                        <h3> <%= user.firstName %> <%= user.lastName %> </h3>
+                        <p style="display: none;"> <%= user.gmail %></p>
+                    </div>
+                    <button class="modal-button"> Remove User </button>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <section id="task-list">
+        <div class="container"> 
+            <% jobs.forEach(job => { %>
+                <div class="user">
+                    <h3 class="mb-1 title"> <%= job.title %> </h3>
+                    <h1 style="display:none;"><%=job._id%></h1>
+                    <h5> Particiant's List </h5>
+                    <% for(let i = 0; i < job.currentlyWorking.length; i++) { %> 
+                        <div class="flex-space-between">
+                            <% users.forEach(user => { %> 
+                                <% if(user.gmail === job.currentlyWorking[i]) { %> 
+                                    <p> <%= user.fullName %> </p>
+                                <% } %>
+                            <% }) %>
+                             <p> $<%= job.moneyAmount[i] %> </p>
+                        </div>
+                    <% }  %> 
+                    <% if(job.donePayment) { %>
+                        <p class="payment-done">  Payment is Done for this Job </p>
+                    <% } else { %>
+                        <button class="modal-button"> Send Money </button>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <section id="report-list">
+        <div class="container"> 
+            <% reports.forEach(report => { %>
+                <div class="report">
+
+                <p class="mb-1"> A report from <strong> <%= report.reportedByName %> </strong>  against <strong> <%= report.reportedAgainstName %> </strong> </p>
+                <h4> <%= report.reason %> </h4>
+
+                    
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <script>
+        const userList = document.querySelector('#users')
+        const taskList = document.querySelector('#completed-tasks')
+        const reportList = document.querySelector('#reports')
+
+        const users = document.querySelector('#user-list')
+        const tasks = document.querySelector('#task-list')
+        const reports = document.querySelector('#report-list')
+
+        userList.addEventListener('click', e => {
+            e.preventDefault()
+
+            taskList.parentElement.classList.remove('current')
+            reportList.parentElement.classList.remove('current')
+            userList.parentElement.classList.add('current')
+            users.style.display = 'block'
+            tasks.style.display = 'none'
+            reports.style.display = 'none'
+
+        })
+
+        taskList.addEventListener('click', e => {
+            e.preventDefault()
+
+            taskList.parentElement.classList.add('current')
+            reportList.parentElement.classList.remove('current')
+            userList.parentElement.classList.remove('current')
+            tasks.style.display = 'block'
+            reports.style.display = 'none'
+            users.style.display = 'none'
+
+        })
+
+        reportList.addEventListener('click', e => {
+            e.preventDefault()
+
+            taskList.parentElement.classList.remove('current')
+            reportList.parentElement.classList.add('current')
+            userList.parentElement.classList.remove('current')
+            tasks.style.display = 'none'
+            reports.style.display = 'block'
+            users.style.display = 'none'
+
+        })
+
+
+        users.querySelectorAll('.modal-button').forEach(button => {
+            button.addEventListener('click', e => {
+                const gmail = button.parentElement.querySelector('p').textContent.trim()
+                button.parentElement.remove()
+                const options = {
+                method: "DELETE",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({gmail: gmail})
+            }
+            fetch('register', options)
+            })
+        })
+        tasks.querySelectorAll('.modal-button').forEach(task => {
+            task.addEventListener('click', async e => {
+            const id = task.parentElement.querySelector('h1').textContent.trim()
+            const data = {
+                _id: id,
+                donePayment: true
+            }
+            const options = {
+                method: "PUT",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            await fetch('job/payment', options)
+            location.assign('/admin');
+
+            
+        })  
+        })
+
+    </script>
+
+</body>
+</html>

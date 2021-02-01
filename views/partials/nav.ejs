@@ -1,0 +1,63 @@
+<% if (title === 'Login' || title === 'Registration') { %>
+    <header>
+        <nav>
+            <h1 class = "register-heading"> Machine Learning Grocery | <%= title %> </h1>
+        </nav>
+    </header>
+
+<%} else if (title === 'Admin'){ %>
+    <header>
+        <nav class="flex-center">
+           <h1> Admin </h1> 
+           <div style="margin:0rem 1rem"class="logo flex">
+                <h1> ML Grocery </h1> 
+            </div> 
+            <h1> Panel </h1> 
+        </nav>
+    </header>
+
+<% } else { %>
+    <header>
+        <div class="balance">
+            <h3> Balance: $ <span class="current-balance"> <%= user.balance %> </span>  </h3>
+            <button class="modal-button" id="add"> Add </button>
+            <button class="modal-button" id="withdraw"> Withdraw </button>
+            <div class="backdrop"></div>
+            <div class="modal-add-money">
+                <h3>Add Money</h3>
+                <div class="modal-input">
+                    <input id="add-input"type="text">
+                </div>
+                <div class="modal-actions">
+                    <div class="modal-button modal-cancel" id="cancel">Cancel</div>
+                    <div class="modal-button modal-post" >Add</div>
+                </div>
+            </div>
+            <div class="modal-withdraw-money">
+                <h3>Withdraw Money</h3>
+                <div class="modal-input">
+                    <input type="text" id="withdraw-input">
+                    <p>  </p>
+                </div>
+                <div class="modal-actions">
+                    <div class="modal-button modal-cancel" id="w-cancel">Cancel</div>
+                    <div class="modal-button modal-post ww" >Withdraw</div>
+                </div>
+            </div>
+        </div>
+
+
+        <nav class="flex-space-around">
+            <div class="logo flex">
+               <a href="/post"> <h1> ML Grocery </h1> </a> 
+            </div>
+            <ul class = "nav-bar flex-space-around">
+                <li class = "list-item profile"> <a href="/profile"> <%= user.firstName %> <%= user.lastName %> </a> </li>
+                <li class = "list-item"> <a href="/post">  Posts </a> </li>
+                <li class = "list-item"> <a href="/job"> Jobs </a> </li>
+                <li class = "list-item"> <a href="/report"> Report </a> </li>
+                <li class = "list-item logOut"> <a href="post/logout" > LogOut </a> </li>
+            </ul>
+        </nav>
+    </header>
+<% } %>
